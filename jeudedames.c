@@ -89,36 +89,69 @@ int is_pawn(char cas){
     } 
 }
 
-char diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color){
-    printf("Le pion %c a la position (%d,%d) peut manger le pion en position : \n", color, pos_init[0], pos_init[1]);
+
+
+int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatable_pawn[][4], int size_eatable_pawn){
+    
     if(color == 'B'){
         if(pos_init[1]+2 < SIZE_GRID && pos_init[0]+2 < SIZE_GRID && (tab[pos_init[1]+1][pos_init[0]+1]=='W')){
             if(tab[pos_init[1]+2][pos_init[0]+2]==' '){
-                printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n",pos_init[0]+1, pos_init[1]+1,pos_init[0]+2, pos_init[1]+2);
+                eatable_pawn[size_eatable_pawn][0] = pos_init[0]+1;
+                eatable_pawn[size_eatable_pawn][1] = pos_init[1]+1;
+                eatable_pawn[size_eatable_pawn][2] = pos_init[0]+2;
+                eatable_pawn[size_eatable_pawn][3] = pos_init[1]+2;
+                size_eatable_pawn++;
             }
         }
 
         if(pos_init[1]+2 < SIZE_GRID && pos_init[0]-2 < SIZE_GRID && tab[pos_init[1]+1][pos_init[0]-1]=='W'){
             if(tab[pos_init[1]+2][pos_init[0]-2]==' '){
-                printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n",pos_init[0]-1, pos_init[1]+1,pos_init[0]-2,pos_init[1]+2);
+                eatable_pawn[size_eatable_pawn][0] = pos_init[0]-1;
+                eatable_pawn[size_eatable_pawn][1] = pos_init[1]+1;
+                eatable_pawn[size_eatable_pawn][2] = pos_init[0]-2;
+                eatable_pawn[size_eatable_pawn][3] = pos_init[1]+2;
+                size_eatable_pawn++;
             }
         }
 
     }else if (color == 'W'){
         if(pos_init[1]-2 < SIZE_GRID && pos_init[0]+2 < SIZE_GRID && tab[pos_init[1]-1][pos_init[0]+1]=='B'){
             if(tab[pos_init[1]-2][pos_init[0]+2]==' '){
-                printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n",pos_init[0]+1, pos_init[1]-1,pos_init[0]+2,pos_init[1]-2);
+                eatable_pawn[size_eatable_pawn][0] = pos_init[0]+1;
+                eatable_pawn[size_eatable_pawn][1] = pos_init[1]-1;
+                eatable_pawn[size_eatable_pawn][2] = pos_init[0]+2;
+                eatable_pawn[size_eatable_pawn][3] = pos_init[1]-2;
+                size_eatable_pawn++;
             }
         }
         if(pos_init[1]-2 < SIZE_GRID && pos_init[0]-2 < SIZE_GRID && tab[pos_init[1]-1][pos_init[0]-1]=='B'){
             if(tab[pos_init[1]-2][pos_init[0]-2]==' '){
-                printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n",pos_init[0]-1, pos_init[1]-1,pos_init[0]-2,pos_init[1]-2);
+                eatable_pawn[size_eatable_pawn][0] = pos_init[0]-1;
+                eatable_pawn[size_eatable_pawn][1] = pos_init[1]-1;
+                eatable_pawn[size_eatable_pawn][2] = pos_init[0]-2;
+                eatable_pawn[size_eatable_pawn][3] = pos_init[1]-2;
+                size_eatable_pawn++;
             }
+        }
+    }
+    return size_eatable_pawn;
+}
+
+void take_diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color){
+    int eatable_pawn[20][4]; // position du pion mangeable puis position voulu pour manger le pion
+    int size_eatable_pawn = 0;
+
+    size_eatable_pawn = diagonal_pawns(tab, pos_init, color, eatable_pawn, size_eatable_pawn);
+
+    if (size_eatable_pawn != 0) {
+        printf("Le pion %c a la position (%d,%d) peut manger le pion en position : \n", color, pos_init[0], pos_init[1]);
+        for(int i = 0; i<size_eatable_pawn; i++){
+            printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n", eatable_pawn[i][0],eatable_pawn[i][1],eatable_pawn[i][2],eatable_pawn[i][3]);
         }
     }
 }
 
-void take_opponent_pawn(char tab[][SIZE_GRID], int pos_init[], int pos_final[], char color){ // vérifier les coordonnées !
+void take_opponent_pawn(char tab[][SIZE_GRID], int pos_init[], int pos_final[], char color){
  
     if(color == 'B'){
         if((pos_init[0]-pos_final[0])==2){
@@ -160,6 +193,21 @@ int move_pawn(char tab[][SIZE_GRID],int pos_init[], int pos_final[], char color)
 }
 
 // TODO Fonction qui suggère le pion à jouer
+int pawn_suggested(char tab[][SIZE_GRID], char color){
+
+    int index[2];
+
+    for (int x=0; x<SIZE_GRID; x++){
+        for(int y=0; y<SIZE_GRID; y++){
+            if (tab[y][x]==color){
+                index[0] = x;
+                index[1] = y;
+                take_diagonal_pawns(tab, index, color);
+            }
+        }
+    }
+}
+// vérifier que le joueur se déplace d'une seul case s'il ne mange pas de pion
 
 
 int is_end_game(char tab[][SIZE_GRID]){

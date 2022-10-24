@@ -10,7 +10,8 @@ int move_pawn(char tab[][SIZE_GRID],int pos_init[], int pos_final[],char color);
 int is_pawn(char cas);
 int is_void_case(char cas);
 void show_board(char board[][SIZE_GRID]);
-char diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color);
+int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatable_pawn[][4], int size_eatable_pawn);
 int is_end_game(char tab[][SIZE_GRID]);
+int pawn_suggested(char tab[][SIZE_GRID], char color);
 
 #endif
