@@ -90,10 +90,19 @@ int is_pawn(char cas){
 }
 
 int is_possible_move(char tab[][SIZE_GRID],int pos_init[], int pos_final[]){
+    int nb_move_x = abs(pos_init[0]-pos_final[0]);
+    int nb_move_y = abs(pos_init[1]-pos_final[1]);
+
     int index_x = (pos_init[0]+pos_final[0])/2;
     int index_y = (pos_init[1]+pos_final[1])/2;
 
-    if (tab[index_y][index_x] != tab[pos_init[1]][pos_init[0]]){
+    // soit on saute un pion adverse
+    if ((abs(pos_final[1]-pos_init[1]) == 2) && (tab[index_y][index_x]!=tab[pos_init[1]][pos_init[0]])){
+        return 1;
+    }
+
+    // soit on va dans une case juste a coté
+    else if(nb_move_x == 1 && nb_move_y == 1){
         return 1;
     }
         
@@ -107,10 +116,11 @@ int is_possible_move(char tab[][SIZE_GRID],int pos_init[], int pos_final[]){
 
 int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatable_pawn[][4], int size_eatable_pawn){
     
-    if(color == 'B'){
-        if(pos_init[1]+2 < SIZE_GRID && pos_init[1]+2 >= 0 
+    
+    if(pos_init[1]+2 < SIZE_GRID && pos_init[1]+2 >= 0 
         && pos_init[0]+2 < SIZE_GRID && pos_init[0]+2 >= 0
-        && (tab[pos_init[1]+1][pos_init[0]+1]=='W')){
+        && tab[pos_init[1]+1][pos_init[0]+1]!=color
+        && tab[pos_init[1]+1][pos_init[0]+1] != ' '){
 
             if(tab[pos_init[1]+2][pos_init[0]+2]==' '){
                 eatable_pawn[size_eatable_pawn][0] = pos_init[0]+1;
@@ -121,9 +131,10 @@ int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatabl
             }
         }
 
-        if(pos_init[1]+2 < SIZE_GRID && pos_init[1]+2 >= 0
+    if(pos_init[1]+2 < SIZE_GRID && pos_init[1]+2 >= 0
         && pos_init[0]-2 < SIZE_GRID && pos_init[0]-2 >= 0
-        && tab[pos_init[1]+1][pos_init[0]-1]=='W'){
+        && tab[pos_init[1]+1][pos_init[0]-1]!=color
+        && tab[pos_init[1]+1][pos_init[0]-1]!=' '){
 
             if(tab[pos_init[1]+2][pos_init[0]-2]==' '){
                 eatable_pawn[size_eatable_pawn][0] = pos_init[0]-1;
@@ -134,10 +145,11 @@ int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatabl
             }
         }
 
-    }else if (color == 'W'){
-        if(pos_init[1]-2 < SIZE_GRID && pos_init[1]-2 >= 0
+    
+    if(pos_init[1]-2 < SIZE_GRID && pos_init[1]-2 >= 0
         && pos_init[0]+2 < SIZE_GRID && pos_init[0]+2 >= 0
-        && tab[pos_init[1]-1][pos_init[0]+1]=='B'){
+        && tab[pos_init[1]-1][pos_init[0]+1]!=color
+        && tab[pos_init[1]-1][pos_init[0]+1]!=' '){
 
             if(tab[pos_init[1]-2][pos_init[0]+2]==' '){
                 eatable_pawn[size_eatable_pawn][0] = pos_init[0]+1;
@@ -147,9 +159,10 @@ int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatabl
                 size_eatable_pawn++;
             }
         }
-        if(pos_init[1]-2 < SIZE_GRID && pos_init[1]-2 >= 0
+    if(pos_init[1]-2 < SIZE_GRID && pos_init[1]-2 >= 0
         && pos_init[0]-2 < SIZE_GRID && pos_init[0]-2 >= 0
-        && tab[pos_init[1]-1][pos_init[0]-1]=='B'){
+        && tab[pos_init[1]-1][pos_init[0]-1]!=color
+        && tab[pos_init[1]-1][pos_init[0]-1]!=' '){
 
             if(tab[pos_init[1]-2][pos_init[0]-2]==' '){
                 eatable_pawn[size_eatable_pawn][0] = pos_init[0]-1;
@@ -159,11 +172,11 @@ int diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatabl
                 size_eatable_pawn++;
             }
         }
-    }
+    
     return size_eatable_pawn;
 }
 
-void take_diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color){
+int take_diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color){
     int eatable_pawn[20][4]; // position du pion mangeable puis position voulu pour manger le pion
     int size_eatable_pawn = 0;
 
@@ -175,6 +188,7 @@ void take_diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color){
             printf(" - (%d,%d) deplacer votre pion a la case (%d,%d)\n", eatable_pawn[i][0],eatable_pawn[i][1],eatable_pawn[i][2],eatable_pawn[i][3]);
         }
     }
+    return size_eatable_pawn;
 }
 
 void take_opponent_pawn(char tab[][SIZE_GRID], int pos_init[], int pos_final[], char color){
@@ -205,16 +219,21 @@ int move_pawn(char tab[][SIZE_GRID],int pos_init[], int pos_final[], char color)
 int pawn_suggested(char tab[][SIZE_GRID], char color){
 
     int index[2];
+    int possible_hit = 0;
 
     for (int x=0; x<SIZE_GRID; x++){
         for(int y=0; y<SIZE_GRID; y++){
             if (tab[y][x]==color){
                 index[0] = x;
                 index[1] = y;
-                take_diagonal_pawns(tab, index, color);
+                possible_hit = take_diagonal_pawns(tab, index, color);
             }
         }
     }
+    if (possible_hit>0){
+        return 1;
+    }
+    return 0;
 }
 
 
