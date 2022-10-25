@@ -11,6 +11,7 @@
 #define GRAS   "\x1B[1m"
 
 
+
 void fill_grid(char tab[][SIZE_GRID]){
     for(int i=0;i<SIZE_GRID;i++){
         for(int j=0; j<SIZE_GRID; j++){
@@ -45,6 +46,7 @@ void show_board(char board[][SIZE_GRID]){
         printf("|");
         for(j=0;j<SIZE_GRID;j++){
             if (board[i][j] == 'B'){
+
                 printf(GRAS RED "B " RESET);
                 printf("|");
             }
@@ -57,6 +59,8 @@ void show_board(char board[][SIZE_GRID]){
                 printf("|");
             }
             if (board[i][j] == ' ' && (i+j)%2!=0){
+
+
                 printf("  |");
             }
         }
