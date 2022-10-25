@@ -3,6 +3,11 @@
 
 #include "jeudedames.h"
 
+#define RED   "\x1B[31m"
+#define RESET "\x1B[0m"
+#define CYN   "\x1B[36m"
+#define YEL   "\x1B[33m"
+
 void fill_grid(char tab[][SIZE_GRID]){
     for(int i=0;i<SIZE_GRID;i++){
         for(int j=0; j<SIZE_GRID; j++){
@@ -27,17 +32,21 @@ void show_board(char board[][SIZE_GRID]){
     int i,j;
     printf("  |");
     for (i=0;i<SIZE_GRID;i++){
-        printf("%d |", i);
+        printf(YEL " %d" RESET, i);
+        printf("|");
     }
     printf("\n");
     for (i=0;i<SIZE_GRID;i++){
-        printf("%d |", i);
+        printf(YEL " %d" RESET, i);
+        printf("|");
         for(j=0;j<SIZE_GRID;j++){
             if (board[i][j] == 'B'){
-                printf("B |");
+                printf(RED "B " RESET);
+                printf("|");
             }
             if (board[i][j] == 'W'){
-                printf("W |");
+                printf(CYN "W " RESET);
+                printf("|");
             }
             if (board[i][j] == 'X' || board[i][j] == ' '){
                 printf("  |");
@@ -226,7 +235,7 @@ int pawn_suggested(char tab[][SIZE_GRID], char color){
             if (tab[y][x]==color){
                 index[0] = x;
                 index[1] = y;
-                possible_hit = take_diagonal_pawns(tab, index, color);
+                possible_hit += take_diagonal_pawns(tab, index, color);
             }
         }
     }
