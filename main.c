@@ -31,6 +31,7 @@ void game(char tab[][SIZE_GRID]){
 
     int is_possible_move = 0; //FALSE
     int is_rafle = 1; // TRUE
+    int eatable_pawn[20][4]; // position du pion mangeable puis position voulu pour manger le pion
 
     char player = 'W';
 
@@ -39,7 +40,7 @@ void game(char tab[][SIZE_GRID]){
 
     while(is_end_game(tab) == 0){
         is_possible_move = 0;
-        is_rafle = pawn_suggested(tab,player);
+        is_rafle = pawn_suggested(tab, player, eatable_pawn);
 
         if (is_rafle == 0){// Pas de rafle possible
             while (is_possible_move == 0){
@@ -50,9 +51,13 @@ void game(char tab[][SIZE_GRID]){
         else{ // Rafle possible
             while (is_possible_move == 0 || is_rafle == 1){ // Si la rafle est possible
                 select_pawns(pos_init, pos_final, player);
-
-                is_possible_move = move_pawn(tab,pos_init, pos_final, player);
-                is_rafle = pawn_suggested(tab, player);
+                for(int i=0; i<20; i++){
+                    if (pos_final[0] == eatable_pawn[i][2] && pos_final[1] == eatable_pawn[i][3]){
+                        is_possible_move = move_pawn(tab,pos_init, pos_final, player);
+                        break;
+                    }       
+                }                   
+                is_rafle = pawn_suggested(tab, player, eatable_pawn);
             }
         }      
 
