@@ -25,6 +25,35 @@ void select_pawns(int pos_init[2], int pos_final[2], char color){
     }
 }
 
+int select_move(){
+    int choice;
+
+    printf("Quel choix voulez-vous faire ? ");
+    scanf("%d", &choice);
+    return choice;
+    
+}
+
+
+void rafle(char tab[][SIZE_GRID], int pos_init[], int pos_final[], int eatable_pawn[][6], char player){
+    int is_possible_move = 0; //FALSE
+    int is_rafle = 1;// rafle possible
+    int choice;
+
+    while (is_possible_move == 0 || is_rafle == 1){ 
+                
+        choice = select_move();
+                
+        int pos_init[2] = {eatable_pawn[choice][0], eatable_pawn[choice][1]};
+        int pos_final[2] = {eatable_pawn[choice][4], eatable_pawn[choice][5]};
+
+        is_possible_move = move_pawn(tab, pos_init, pos_final, player);              
+        is_rafle = pawn_suggested(tab, player, eatable_pawn);
+    }
+
+
+}
+
 void game(char tab[][SIZE_GRID]){
     int pos_init[2];
     int pos_final[2];
@@ -43,26 +72,15 @@ void game(char tab[][SIZE_GRID]){
         is_rafle = pawn_suggested(tab, player, eatable_pawn);
 
         if (is_rafle == 0){// Pas de rafle possible
+
             while (is_possible_move == 0){
-                        select_pawns(pos_init, pos_final, player);
-                        is_possible_move = move_pawn(tab,pos_init, pos_final, player);
-                    }
+                select_pawns(pos_init, pos_final, player);
+                is_possible_move = move_pawn(tab, pos_init, pos_final, player);
+            }
         }
         else{ // Rafle possible
-            while (is_possible_move == 0 || is_rafle == 1){ // Si la rafle est possible
-                
-                select_pawns(pos_init, pos_final, player);
-        
-                for(int i=0; i<20; i++){
-                    
-                    if (pos_final[0] == eatable_pawn[i][4] && pos_final[1] == eatable_pawn[i][5]){
-                        is_possible_move = move_pawn(tab,pos_init, pos_final, player);
-                        break;
-                    }       
-                }                   
-                is_rafle = pawn_suggested(tab, player, eatable_pawn);
-            }
-        }      
+            rafle(tab, pos_init, pos_final, eatable_pawn, player);
+        }
 
         if (player == 'W')
             player = 'B';
