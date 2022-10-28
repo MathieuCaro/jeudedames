@@ -7,13 +7,10 @@
 #define RESET "\x1B[0m"
 #define CYN   "\x1B[36m"
 #define YEL   "\x1B[33m"
-
-#define VOID_CASE ' '
-
 #define FONDBC   "\x1B[47m"
 #define GRAS   "\x1B[1m"
 
-
+#define VOID_CASE ' '
 
 
 void fill_grid(char tab[][SIZE_GRID]){
@@ -126,11 +123,8 @@ int is_possible_move(char tab[][SIZE_GRID],int pos_init[], int pos_final[]){
 }
 
 
-
-
 void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatable_pawn[][6], int *size_eatable_pawn){
 
-     
     if(pos_init[1] + 2 < SIZE_GRID && pos_init[1] + 2 >= 0 
         && pos_init[0] + 2 < SIZE_GRID && pos_init[0] + 2 >= 0
         && tab[pos_init[1] + 1][pos_init[0] + 1] != color
@@ -145,7 +139,7 @@ void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatab
                 eatable_pawn[*size_eatable_pawn][5] = pos_init[1] + 2;
                 *size_eatable_pawn += 1;
             }
-        }
+    }
 
     if(pos_init[1] + 2 < SIZE_GRID && pos_init[1] + 2 >= 0
         && pos_init[0] - 2 < SIZE_GRID && pos_init[0] - 2 >= 0
@@ -161,7 +155,7 @@ void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatab
                 eatable_pawn[*size_eatable_pawn][5] = pos_init[1] + 2;
                 *size_eatable_pawn += 1;
             }
-        }
+    }
     
     if(pos_init[1] - 2 < SIZE_GRID && pos_init[1] - 2 >= 0
         && pos_init[0] + 2 < SIZE_GRID && pos_init[0] + 2 >= 0
@@ -177,7 +171,7 @@ void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatab
                 eatable_pawn[*size_eatable_pawn][5] = pos_init[1] - 2;
                 *size_eatable_pawn += 1;
             }
-        }
+    }
 
     if(pos_init[1] - 2 < SIZE_GRID && pos_init[1] - 2 >= 0
         && pos_init[0] - 2 < SIZE_GRID && pos_init[0] - 2 >= 0
@@ -193,7 +187,7 @@ void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatab
                 eatable_pawn[*size_eatable_pawn][5] = pos_init[1] - 2;
                 *size_eatable_pawn += 1;
             }
-        } 
+    } 
 }
 
 
