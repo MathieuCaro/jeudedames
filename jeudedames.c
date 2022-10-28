@@ -7,7 +7,13 @@
 #define RESET "\x1B[0m"
 #define CYN   "\x1B[36m"
 #define YEL   "\x1B[33m"
+
 #define VOID_CASE ' '
+
+#define FONDBC   "\x1B[47m"
+#define GRAS   "\x1B[1m"
+
+
 
 
 void fill_grid(char tab[][SIZE_GRID]){
@@ -21,6 +27,7 @@ void fill_grid(char tab[][SIZE_GRID]){
             }
             else if(((i + j) % 2 != 0) && (i >= 3) && (i <= 5)){ 
                 tab[i][j] = VOID_CASE;
+
             }
             else if(((i + j) % 2 != 0) && (i >= 5)){ 
                 tab[i][j]='W';
@@ -43,14 +50,20 @@ void show_board(char board[][SIZE_GRID]){
         printf("|");
         for(j = 0; j < SIZE_GRID; j++){
             if (board[i][j] == 'B'){
-                printf(RED "B " RESET);
+
+                printf(GRAS RED "B " RESET);
                 printf("|");
             }
             if (board[i][j] == 'W'){
-                printf(CYN "W " RESET);
+                printf(GRAS CYN "W " RESET);
                 printf("|");
             }
-            if (board[i][j] == VOID_CASE){
+            if (board[i][j] == ' ' && (i+j)%2==0){
+                printf(FONDBC"  "RESET);
+                printf("|");
+            }
+
+            if (board[i][j] == VOID_CASE && (i+j)%2!=0){
                 printf("  |");
             }
         }
@@ -264,3 +277,4 @@ int is_end_game(char tab[][SIZE_GRID]){
     else
         printf("Victoire des pions noirs");
 }
+
