@@ -50,8 +50,6 @@ void rafle(char tab[][SIZE_GRID], int pos_init[], int pos_final[], int eatable_p
         is_possible_move = move_pawn(tab, pos_init, pos_final, player);              
         is_rafle = pawn_suggested(tab, player, eatable_pawn);
     }
-
-
 }
 
 void game(char tab[][SIZE_GRID]){

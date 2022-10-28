@@ -8,7 +8,6 @@
 #define CYN   "\x1B[36m"
 #define YEL   "\x1B[33m"
 #define FONDBC   "\x1B[47m"
-#define GRAS   "\x1B[1m"
 
 #define VOID_CASE ' '
 
@@ -48,11 +47,11 @@ void show_board(char board[][SIZE_GRID]){
         for(j = 0; j < SIZE_GRID; j++){
             if (board[i][j] == 'B'){
 
-                printf(GRAS RED "B " RESET);
+                printf(RED "B " RESET);
                 printf("|");
             }
             if (board[i][j] == 'W'){
-                printf(GRAS CYN "W " RESET);
+                printf(CYN "W " RESET);
                 printf("|");
             }
             if (board[i][j] == ' ' && (i+j)%2==0){

@@ -16,7 +16,6 @@ int is_void_case(char cas);
 int is_end_game(char tab[][SIZE_GRID]);
 
 
-
 void diagonal_pawns(char tab[][SIZE_GRID], int pos_init[], char color, int eatable_pawn[][6], int *size_eatable_pawn);
 
 int pawn_suggested(char tab[][SIZE_GRID], char color, int eatable_pawn[][6]);
