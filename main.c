@@ -11,17 +11,29 @@
 void select_pawns(int pos_init[2], int pos_final[2], char color){
     if (color == 'W'){
         printf(CYN "Joueur blanc : Quel pion voulez-vous deplacer ? " RESET);
-        scanf("%d %d", &pos_init[0], &pos_init[1]);
+        if (scanf("%d %d", &pos_init[0], &pos_init[1]) !=2)
+        {
+            exit();
+        }
                     
         printf(CYN "Joueur blanc : Ou voulez vous le deplacer ? " RESET);
-        scanf("%d %d", &pos_final[0], &pos_final[1]);
+        if(scanf("%d %d", &pos_final[0], &pos_final[1])!=2)
+        {
+            exit();
+        }
     }
     else {
         printf(RED "Joueur noir : Quel pion voulez-vous deplacer ? " RESET);
-        scanf("%d %d", &pos_init[0], &pos_init[1]);
+        if(scanf("%d %d", &pos_init[0], &pos_init[1])!=2)
+        {
+            exit();
+        }
                     
         printf(RED "Joueur noir : Ou voulez vous le deplacer ? " RESET);
-        scanf("%d %d", &pos_final[0], &pos_final[1]);
+        if(scanf("%d %d", &pos_final[0], &pos_final[1])!=2)
+        {
+            exit();
+        }
     }
 }
 
@@ -29,7 +41,10 @@ int select_move(){
     int choice;
 
     printf("Quel choix voulez-vous faire ? ");
-    scanf("%d", &choice);
+    if(scanf("%d", &choice)!=1)
+    {
+            exit();
+     }
     return choice;
     
 }
