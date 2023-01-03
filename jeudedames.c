@@ -269,5 +269,6 @@ int is_end_game(char tab[][SIZE_GRID]){
     
     else
         printf("Victoire des pions noirs");
+    return 1;
 }
 
